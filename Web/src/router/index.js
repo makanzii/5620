@@ -78,37 +78,10 @@ router.beforeEach((to, from, next) => {
   // Check if the route requires authentication
   if (to.matched.some((route) => route.meta.requiresAuth)) {
     // Check if the user is authenticated
-    if (window.$cookies.isKey('auth_token')) {
-      // Check if the user info is already loaded
-      if (store.state.user.user_id === null) {
-        // User info is not loaded
-        fetch(`${import.meta.env.VITE_ROOT_API}/users/me`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': window.$cookies.get('csrftoken'),
-            Authorization: window.$cookies.get('auth_token')
-          }
-        })
-          .then((response) => {
-            if (!response.ok) {
-              return response.json().then((data) => {
-                throw new Error(data.message)
-              })
-            }
-            return response.json()
-          })
-          .then((data) => {
-            console.log(data)
-            store.commit('user/setUser', data)
-          })
-          .catch((error) => {
-            console.error(error)
-            window.$cookies.remove('auth_token')
-            next('/login')
-          })
-      }
-      next() // User is authenticated, proceed to the route
+    const storedEmail = localStorage.getItem("email");
+    if (storedEmail) {
+      console.log('authenticated!');
+      next()
     } else {
       // User is not authenticated, redirect to the login page
       next('/login')

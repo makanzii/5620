@@ -16,12 +16,12 @@ export default {
       this.$refs.loginBtn.disabled = true;
       this.$refs.loginBtn.innerText = "Logging in...";
 
-      fetch(`${import.meta.env.VITE_ROOT_API}/login`, {
+      fetch(`/api/login`, {
         method: "POST",
-        credentials: "include",
+        //credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          "X-CSRFToken": this.$cookies.get('csrf_token'),
+          //"X-CSRFToken": this.$cookies.get('csrf_token'),
         },
         body: JSON.stringify(this.formData)
       })
@@ -32,9 +32,9 @@ export default {
             });
           }
 
-          if (response.headers.get('Authorization') !== null) {
-            this.$cookies.set('auth_token', response.headers.get('Authorization'))
-          }
+          // if (response.headers.get('Authorization') !== null) {
+          //   this.$cookies.set('auth_token', response.headers.get('Authorization'))
+          // }
 
           return response.json();
         })
@@ -42,11 +42,13 @@ export default {
           console.log(data);
 
           this.$refs.loginBtn.setAttribute("data-status", "success");
-          this.$refs.loginBtn.innerText = data.message;
+          //this.$refs.loginBtn.innerText = data.message;
 
-          this.$store.commit("user/setUser", data.user);
-
-          setTimeout(() => this.$router.push({ name: "Home" }), 2000);
+          //this.$store.commit("user/setUser", data.user);
+          localStorage.setItem("email", data.email);
+          localStorage.setItem("token", data.token);
+          this.$router.push({ name: "Home" });
+          //setTimeout(() => this.$router.push({ name: "Home" }), 200);
         })
         .catch(error => {
           console.error(error);
