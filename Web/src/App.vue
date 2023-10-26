@@ -19,12 +19,6 @@ export default {
     }
   },
   mounted() {
-    fetch(`${import.meta.env.VITE_ROOT_API}/csrf-token`)
-      .then(response => response.json())
-      .then(data => {
-        this.$cookies.set("csrf_token", data.csrf_token);
-      })
-      .catch(error => console.error(error));
   }
 };
 </script>

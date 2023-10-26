@@ -1,23 +1,15 @@
-package com.api.educationalsystem.models;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+package com.api.educationalsystem.dto;
 
 import java.util.Date;
 
-@Entity // This tells Hibernate to make a table out of this class
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+import com.api.educationalsystem.models.User;
+
+public class UserDTO {
     private int id;
 
     private String username;
 
     private String email;
-
-    private String password;
 
     // private String profilePicture;
 
@@ -25,7 +17,20 @@ public class User {
 
     private Date dob;
 
-    private boolean suspended;
+    public UserDTO() {
+    }
+
+    public static UserDTO of(User user) {
+        UserDTO userDTO = new UserDTO();
+
+        userDTO.setId(user.getId());
+        userDTO.setUsername(user.getUsername());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setRole(user.getRole());
+        userDTO.setDob(user.getDob());
+
+        return userDTO;
+    }
 
     public int getId() {
         return id;
@@ -51,14 +56,6 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getRole() {
         return role;
     }
@@ -74,13 +71,4 @@ public class User {
     public void setDob(Date dob) {
         this.dob = dob;
     }
-
-    public boolean isSuspended() {
-        return suspended;
-    }
-
-    public void setSuspended(boolean suspended) {
-        this.suspended = suspended;
-    }
-
 }
