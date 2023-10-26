@@ -16,14 +16,10 @@ export default {
       this.$refs.loginBtn.disabled = true;
       this.$refs.loginBtn.innerText = "Logging in...";
 
-      fetch(`${import.meta.env.VITE_ROOT_API}/login`, {
+      fetch(`${import.meta.env.VITE_ROOT_API}/users/login`, {
         method: "POST",
         credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": this.$cookies.get('csrf_token'),
-        },
-        body: JSON.stringify(this.formData)
+        body: new FormData(this.$refs.loginForm)
       })
         .then(response => {
           if (!response.ok) {
@@ -32,8 +28,11 @@ export default {
             });
           }
 
+          console.log(response.headers.get('Authorization'))
+
           if (response.headers.get('Authorization') !== null) {
             this.$cookies.set('auth_token', response.headers.get('Authorization'))
+            console.log("here " + this.$cookies.get('auth_token'))
           }
 
           return response.json();
@@ -44,7 +43,9 @@ export default {
           this.$refs.loginBtn.setAttribute("data-status", "success");
           this.$refs.loginBtn.innerText = data.message;
 
-          this.$store.commit("user/setUser", data.user);
+          this.$store.commit("user/setUser", data.data.user);
+
+          console.log("here");
 
           setTimeout(() => this.$router.push({ name: "Home" }), 2000);
         })
@@ -70,7 +71,7 @@ export default {
 
     <div class="authentication">
       <h2>Login</h2>
-      <form class="login-form" @submit="submitPasswordLogin">
+      <form class="login-form" ref="loginForm" @submit="submitPasswordLogin">
         <div class="input-box">
           <input type="email" name="email" id="email" v-model="formData.email"
             pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$" placeholder="" required />

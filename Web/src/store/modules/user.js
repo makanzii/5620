@@ -1,10 +1,10 @@
 // initial state
 const state = () => ({
-  user_id: null,
+  id: null,
   username: null,
   email: null,
-  phone_number: null,
-  user_type: null
+  role: null,
+  dob: null
 })
 
 // getters
@@ -16,11 +16,11 @@ const actions = {}
 // mutations
 const mutations = {
   setUser(state, user) {
-    state.user_id = user.user_id
+    state.id = user.id
     state.username = user.username
     state.email = user.email
-    state.phone_number = user.phone_number
-    state.user_type = user.user_type
+    state.role = user.role
+    state.dob = user.dob
   }
 }
 
