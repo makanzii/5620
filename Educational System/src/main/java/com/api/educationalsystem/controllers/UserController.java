@@ -45,10 +45,10 @@ public class UserController {
         // @ResponseBody means the returned String is the response, not a view name
         // @RequestParam means it is a parameter from the GET or POST request
 
-        User existingUser = userRepository.findByUsername(username);
+        User existingUser = userRepository.findByEmail(email);
 
         if (existingUser != null) {
-            message = "Username already exists";
+            message = "Email already used for another account!";
             data = null;
 
             return new ResponseEntity<Result>(Result.of(message, data), null, HttpStatus.CONFLICT);

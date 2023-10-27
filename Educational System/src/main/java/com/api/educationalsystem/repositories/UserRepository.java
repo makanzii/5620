@@ -9,8 +9,8 @@ import com.api.educationalsystem.models.User;
 
 public interface UserRepository extends CrudRepository<User, Integer> {
 
-    User findByUsername(String username);
-
     User findByEmailAndPassword(String email, String password);
+
+    User findByEmail(String username);
 
 }
